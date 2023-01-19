@@ -1,4 +1,4 @@
-import { Hero } from "./hero";
+import { Hero } from "src/features/shared/@types";
 
 export const HEROES: Hero[] = [
     { id: 12, name: 'Dr. Nice' },

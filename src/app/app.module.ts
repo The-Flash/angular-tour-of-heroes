@@ -1,32 +1,32 @@
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
-import { InMemoryDataService } from "./in-memory-data.service";
 import { NgModule } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { HeroesComponent } from './heroes/heroes.component';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
-import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from "@angular/common/http";
-import { HeroSearchComponent } from './hero-search/hero-search.component';
 
+import { MessagesModule } from "src/features/messages/messages.module";
+import { HeroesComponent } from "src/features/heroes/components/heroes.component";
+import { HeroDetailComponent } from "src/features/hero-detail/components/hero-detail.component";
+import { InMemoryDataService } from "src/features/shared/services/in-memory-data.service";
+import { DashboardComponent } from "src/features/dashboard/components/dashboard.component";
+import { HeroSearchModule } from "src/features/hero-search/hero-search.module";
 @NgModule({
   declarations: [
     AppComponent,
     HeroesComponent,
     HeroDetailComponent,
-    MessagesComponent,
     DashboardComponent,
-    HeroSearchComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    MessagesModule,
+    HeroSearchModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),

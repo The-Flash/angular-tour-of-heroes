@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
-import { MessageService } from '../message.service';
-import { HEROES } from '../mock-heroes';
+import { HEROES } from 'src/features/shared/mocks/mock-heroes';
+import { Hero } from 'src/features/shared/@types';
+import { HeroService } from 'src/features/shared/services/hero.service';
+import { MessageService } from 'src/features/shared/services/message.service';
 
 @Component({
   selector: 'app-heroes',

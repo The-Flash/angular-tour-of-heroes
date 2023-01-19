@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Hero } from './hero';
+import { Hero } from '../@types';
 
 @Injectable({
   providedIn: 'root'
