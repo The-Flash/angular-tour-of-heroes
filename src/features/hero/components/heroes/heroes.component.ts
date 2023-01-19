@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { HEROES } from 'src/features/shared/mocks/mock-heroes';
 import { Hero } from 'src/features/shared/@types';
-import { HeroService } from 'src/features/shared/services/hero.service';
-import { MessageService } from 'src/features/shared/services/message.service';
+import { IHeroService } from 'src/features/shared/services/hero.service';
+import { IMessageService } from 'src/features/shared/services/message.service';
 
 @Component({
   selector: 'app-heroes',
@@ -14,7 +14,7 @@ export class HeroesComponent {
 
   selectedHero?: Hero;
 
-  constructor(private heroService: HeroService, private messageService: MessageService) { }
+  constructor(private heroService: IHeroService, private messageService: IMessageService) { }
 
   ngOnInit(): void {
     this.getHeroes();

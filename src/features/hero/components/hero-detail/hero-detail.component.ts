@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Hero } from 'src/features/shared/@types';
-import { HeroService } from 'src/features/shared/services/hero.service';
+import { IHeroService } from 'src/features/shared/services/hero.service';
 
 @Component({
   selector: 'app-hero-detail',
@@ -10,7 +10,7 @@ import { HeroService } from 'src/features/shared/services/hero.service';
 export class HeroDetailComponent {
   @Input() hero?: Hero;
 
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: IHeroService) { }
 
   save() {
     if (this.hero) {

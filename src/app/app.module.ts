@@ -1,6 +1,5 @@
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { NgModule } from '@angular/core';
-import { FormsModule } from "@angular/forms";
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -8,30 +7,35 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
 
 import { MessagesModule } from "src/features/messages/messages.module";
-import { HeroesComponent } from "src/features/heroes/components/heroes.component";
-import { HeroDetailComponent } from "src/features/hero-detail/components/hero-detail.component";
 import { InMemoryDataService } from "src/features/shared/services/in-memory-data.service";
 import { DashboardComponent } from "src/features/dashboard/components/dashboard.component";
 import { HeroSearchModule } from "src/features/hero-search/hero-search.module";
+import { IMessageService, MessageService } from "src/features/shared/services/message.service";
+import { HeroService, IHeroService } from "src/features/shared/services/hero.service";
+import { HeroModule } from "src/features/hero/hero.module";
 @NgModule({
   declarations: [
     AppComponent,
-    HeroesComponent,
-    HeroDetailComponent,
     DashboardComponent,
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     MessagesModule,
     HeroSearchModule,
+    HeroModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
   ],
-  providers: [],
+  providers: [{
+    provide: IMessageService,
+    useClass: MessageService,
+  }, {
+    provide: IHeroService,
+    useClass: HeroService
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

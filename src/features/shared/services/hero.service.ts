@@ -5,10 +5,19 @@ import { catchError, tap } from "rxjs/operators";
 import { MessageService } from 'src/features/shared/services/message.service';
 import { Hero } from '../@types';
 
+export abstract class IHeroService {
+  public abstract getHeroes(): Observable<Hero[]>;
+  public abstract getHero(id: number): Observable<Hero>;
+  public abstract updateHero(hero: Hero): Observable<any>;
+  public abstract addHero(hero: Hero): Observable<Hero>;
+  public abstract deleteHero(id: number): Observable<Hero>;
+  public abstract searchHeroes(term: string): Observable<Hero[]>;
+}
+
 @Injectable({
   providedIn: 'root'
 })
-export class HeroService {
+export class HeroService implements IHeroService {
 
   private heroesUrl = "api/heroes";
   httpOptions = {
