@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from "rxjs/operators";
+import { Observable, of, Subject, merge } from 'rxjs';
+import { catchError, tap, scan } from "rxjs/operators";
 import { MessageService } from 'src/features/shared/services/message.service';
-import { Hero } from '../@types';
+import { CRUDAction, Hero } from '../@types';
 
 export abstract class IHeroService {
+  public abstract allHeroes$: Observable<Hero[]>;
   public abstract getHeroes(): Observable<Hero[]>;
   public abstract getHero(id: number): Observable<Hero>;
   public abstract updateHero(hero: Hero): Observable<any>;
@@ -20,6 +21,22 @@ export abstract class IHeroService {
 export class HeroService implements IHeroService {
 
   private heroesUrl = "api/heroes";
+
+  heroes$ = this.getHeroes();
+
+  private heroCRUDSubject = new Subject<CRUDAction<Hero>>();
+  heroCRUDAction = this.heroCRUDSubject.asObservable();
+
+  public allHeroes$: Observable<Hero[]> = merge(
+    this.heroes$,
+    this.heroCRUDAction
+  ).pipe(
+    scan(
+      (heroes, value) => this.reducer(heroes, value),
+      [] as Hero[]
+    ),
+  );
+
   httpOptions = {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   }
@@ -28,8 +45,23 @@ export class HeroService implements IHeroService {
     private http: HttpClient,
     private messageService: MessageService) { }
 
+  private reducer(heroes: Hero[], value: Hero[] | CRUDAction<Hero>) {
+    if (!(value instanceof Array)) {
+      if (value.action === "add") {
+        return [...heroes, value.data];
+      }
+      if (value.action === "delete") {
+        return heroes.filter(hero => {
+          return hero.id !== value.data.id
+        });
+      }
+    } else {
+      return value;
+    }
+    return heroes;
+  }
+
   getHeroes(): Observable<Hero[]> {
-    // return heroes;
     return this.http.get<Hero[]>(this.heroesUrl)
       .pipe(
         tap(_ => this.log("fetched heroes")),
@@ -65,6 +97,12 @@ export class HeroService implements IHeroService {
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions)
       .pipe(
         tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
+        tap((newHero: Hero) => {
+          this.heroCRUDSubject.next({
+            action: "add",
+            data: newHero
+          })
+        }),
         catchError(this.handleError<Hero>("addHero"))
       );
   }
@@ -74,6 +112,12 @@ export class HeroService implements IHeroService {
     return this.http.delete<Hero>(url, this.httpOptions)
       .pipe(
         tap(_ => this.log(`deleted hero id=${id}`)),
+        tap(hero => {
+          this.heroCRUDSubject.next({
+            action: "delete",
+            data: { id: id } as Hero
+          });
+        }),
         catchError(this.handleError<Hero>("deleteHero"))
       );
   }

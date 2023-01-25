@@ -1,21 +1,17 @@
-<h2>My Heroes</h2>
-<ul>
-    <li *ngFor="let hero of heroes">
-        <button type="button" (click)="onSelect(hero)" [class.selected]="hero === selectedHero">
-            <span class="badge">{{hero.id}}</span>
-            <span class="name">{{hero.name}}</span>
-        </button>
-        <button type="button" class="delete" title="delete hero" (click)="delete(hero)">
-            X
-        </button>
-    </li>
-</ul>
-
-<div>
-    <label for="new-hero">Hero name: </label>
-    <input type="new-hero" #heroName />
-
-    <button type="button" class="add-button" (click)="add(heroName.value); heroName.value=''">Add</button>
+<div class="add-form">
+    <mat-form-field>
+        <input matInput placeholder="Name" type="new-hero" #heroName />
+    </mat-form-field>
+    <button mat-stroked-button color="primary" type="button" class="add-button"
+        (click)="add(heroName.value); heroName.value=''">
+        Add
+    </button>
 </div>
-
-<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+<div class="heroes-container">
+    <ul>
+        <app-hero-avatar (selectHero)="onSelect(hero)" *ngFor="let hero of heroes$ | async" [hero]="hero"
+            (deleteHero)="delete(hero)">
+        </app-hero-avatar>
+    </ul>
+    <app-hero-detail [hero]="selectedHero"></app-hero-detail>
+</div>

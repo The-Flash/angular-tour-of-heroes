@@ -1,0 +1,7 @@
+<li *ngIf="hero" class="hero-avatar" (click)="emitSelectHero()">
+    <img *ngIf="hero" src="{{avatarUri}}" alt="{{hero.name}}" />
+    <p>{{hero.name}}</p>
+    <button (click)="emitDeleteHero()" mat-stroked-button color="warn">
+        Delete
+    </button>
+</li>

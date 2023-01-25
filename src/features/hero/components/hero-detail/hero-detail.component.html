@@ -1,10 +1,17 @@
+<div class="no-selected-hero" *ngIf="!hero">
+    <p class="mat-body">
+        No hero selected
+    </p>
+</div>
+
 <div *ngIf="hero">
 
     <h2>{{hero.name | uppercase}} Details</h2>
-    <div><span>id: </span>{{hero.id}}</div>
-    <div>
-        <label for="hero-name">Hero name: </label>
-        <input id="hero-name" [(ngModel)]="hero.name" placeholder="name">
-    </div>
-    <button type="button" (click)="save()">save</button>
+    <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="hero.name" />
+    </mat-form-field>
+    <br>
+    <button mat-stroked-button color="primary" type="button" (click)="save()">
+        Save
+    </button>
 </div>

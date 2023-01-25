@@ -1,0 +1,29 @@
+@use "@angular/material" as mat;
+
+$chips-primary: mat.define-palette(mat.$green-palette, 500);
+$chips-accent: mat.define-palette(mat.$pink-palette);
+
+$chips-theme: mat.define-light-theme((
+    color: (
+        primary: $chips-primary,
+        accent: $chips-accent,
+    )
+));
+
+@include mat.chips-theme($chips-theme);
+
+.heroes-menu {
+    display: flex;
+    gap: 1rem;
+
+    mat-chip-option {
+        .mat-mdc-chip-selected {
+            color: white;
+        }
+
+        .mdc-evolution-chip--selected {
+            color: white;
+        }
+    }
+}
+

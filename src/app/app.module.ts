@@ -13,6 +13,9 @@ import { HeroSearchModule } from "src/features/hero-search/hero-search.module";
 import { IMessageService, MessageService } from "src/features/shared/services/message.service";
 import { HeroService, IHeroService } from "src/features/shared/services/hero.service";
 import { HeroModule } from "src/features/hero/hero.module";
+
+import { MatChipsModule } from "@angular/material/chips";
+import { AvatarGeneratorService, IAvatarGenerateService } from "src/features/shared/services/avatar-generator.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,13 +31,19 @@ import { HeroModule } from "src/features/hero/hero.module";
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
+
+    // UI
+    MatChipsModule,
   ],
   providers: [{
     provide: IMessageService,
     useClass: MessageService,
   }, {
     provide: IHeroService,
-    useClass: HeroService
+    useClass: HeroService,
+  }, {
+    provide: IAvatarGenerateService,
+    useClass: AvatarGeneratorService,
   }],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,15 @@
+.hero-avatar {
+    width: 5rem;
+    padding: 0.5rem 1.5rem;
+    transition: all 500ms;
+    border-radius: 10px;
+    cursor: pointer;
+
+    img {
+        border-radius: 50%;
+    }
+
+    &:hover {
+        background-color: rgb(221, 221, 221);
+    }
+}
