@@ -123,6 +123,7 @@ export class HeroService implements IHeroService {
   }
 
   searchHeroes(term: string): Observable<Hero[]> {
+    console.log("Hello")
     if (!term.trim()) {
       return of([]);
     }

@@ -14,38 +14,8 @@ export class HeroesComponent {
 
   selectedHero?: Hero;
   newHero?= null;
-  newHeroSubject = new BehaviorSubject<Hero | null>(null);
-  newHeroSubjectAction = this.newHeroSubject.asObservable();
-  deleteHeroSubject = new BehaviorSubject<number | null>(null);
-  deleteHeroAction = this.deleteHeroSubject.asObservable();
-
-  // heroes$: Observable<Hero[]> = race([
-  //   this.heroService.getHeroes(),
-  //   this.newHeroSubjectAction,
-  //   this.deleteHeroAction
-  // ]).pipe(
-  //   map((data) => {
-  //     console.log(data);
-  //     // if (deletedHeroId) {
-  //     //   console.log("Delete Hero", deletedHeroId)
-  //     //   return heroes.filter((hero) => {
-  //     //     this.deleteHeroSubject.next(null);
-  //     //     return hero.id !== deletedHeroId;
-  //     //   });
-  //     // }
-  //     // if (newHero) {
-  //     //   heroes.push(newHero);
-  //     // }
-  //     if(typeof data === "number") {
-  //       return 
-  //     }
-  //     // return heroes;
-  //     if(Array.isArray(data)) {
-  //       return data;
-  //     }
-  //     return [];
-  //   }),
-  // );
+  private newHeroSubject = new BehaviorSubject<Hero | null>(null);
+  private deleteHeroSubject = new BehaviorSubject<number | null>(null);
 
   heroes$: Observable<Hero[]> = this.heroService.allHeroes$;
   constructor(public heroService: IHeroService, private messageService: IMessageService) { }

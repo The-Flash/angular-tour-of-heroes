@@ -8,28 +8,8 @@ import { MatChipsModule, MatChipOption } from "@angular/material/chips";
 import { BrowserModule, By } from "@angular/platform-browser";
 import { HeroSearchModule } from "src/features/hero-search/hero-search.module";
 import { HttpClientModule } from "@angular/common/http";
-class HeroServiceTestDouble implements IHeroService {
-    public allHeroes$: Observable<Hero[]> = of(HEROES);
-    public getHeroes(): Observable<Hero[]> {
-        return of(HEROES);
-    }
-    public getHero(id: number): Observable<Hero> {
-        throw new Error("Method not implemented.");
-    }
-    public updateHero(hero: Hero): Observable<any> {
-        throw new Error("Method not implemented.");
-    }
-    public addHero(hero: Hero): Observable<Hero> {
-        throw new Error("Method not implemented.");
-    }
-    public deleteHero(id: number): Observable<Hero> {
-        throw new Error("Method not implemented.");
-    }
-    public searchHeroes(term: string): Observable<Hero[]> {
-        throw new Error("Method not implemented.");
-    }
+import { HeroServiceTestDouble } from "src/features/shared/test_doubles/HeroServiceTestDouble";
 
-}
 
 describe("DashboardComponent", () => {
     let component: DashboardComponent;
@@ -56,6 +36,11 @@ describe("DashboardComponent", () => {
         component = fixture.componentInstance;
         fixture.detectChanges();
     })
+
+    // afterEach(() => {
+    //     component = null;
+    //     fixture = null;
+    // })
 
     it("should create", () => {
         expect(component).toBeTruthy();
