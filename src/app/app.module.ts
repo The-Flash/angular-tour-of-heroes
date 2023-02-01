@@ -16,6 +16,11 @@ import { HeroModule } from "src/features/hero/hero.module";
 
 import { MatChipsModule } from "@angular/material/chips";
 import { AvatarGeneratorService, IAvatarGenerateService } from "src/features/shared/services/avatar-generator.service";
+import { StoreModule } from '@ngrx/store';
+import { heroReducer } from "./state/heroes/hero.reducer";
+import { EffectsModule } from '@ngrx/effects';
+import { HeroEffects } from "./state/heroes/hero.effects";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations"
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,9 +36,15 @@ import { AvatarGeneratorService, IAvatarGenerateService } from "src/features/sha
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
-
+    NoopAnimationsModule,
     // UI
     MatChipsModule,
+
+    StoreModule.forRoot({
+      hero: heroReducer,
+    }, {}),
+
+    EffectsModule.forRoot([HeroEffects]),
   ],
   providers: [{
     provide: IMessageService,
