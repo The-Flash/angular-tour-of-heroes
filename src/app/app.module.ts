@@ -21,6 +21,7 @@ import { heroReducer } from "./state/heroes/hero.reducer";
 import { EffectsModule } from '@ngrx/effects';
 import { HeroEffects } from "./state/heroes/hero.effects";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations"
+import { messageReducer } from "./state/messages/message.reducer";
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations"
 
     StoreModule.forRoot({
       hero: heroReducer,
+      messages: messageReducer,
     }, {}),
 
     EffectsModule.forRoot([HeroEffects]),

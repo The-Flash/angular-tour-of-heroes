@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HEROES } from 'src/features/shared/mocks/mock-heroes';
 import { Hero } from 'src/features/shared/@types';
 import { IHeroService } from 'src/features/shared/services/hero.service';
 import { IMessageService } from 'src/features/shared/services/message.service';
-import { BehaviorSubject, combineLatest, concat, map, Observable, of, race, Subject, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { addHero, deleteHero, loadHeroes } from 'src/app/state/heroes/hero.actions';
 import { selectAllHeroes } from 'src/app/state/heroes/hero.selectors';
+import { addMessage } from 'src/app/state/messages/message.actions';
 
 @Component({
   selector: 'app-heroes',
@@ -21,7 +20,6 @@ export class HeroesComponent implements OnInit {
   heroes$ = this.store.select(selectAllHeroes);
   constructor(
     public heroService: IHeroService,
-    private messageService: IMessageService,
     private store: Store
   ) { }
 
@@ -31,7 +29,9 @@ export class HeroesComponent implements OnInit {
 
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
-    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
+    this.store.dispatch(addMessage({
+      message: `HeroesComponent: Selected hero id=${hero.id}`
+    }));
   }
 
   getHeroes() {
@@ -44,11 +44,17 @@ export class HeroesComponent implements OnInit {
     this.store.dispatch(addHero({
       hero: { name } as Hero
     }));
+    this.store.dispatch(addMessage({
+      message: `HeroesComponent: Added hero name=${name}`
+    }));
   }
 
   delete(hero: Hero): void {
     this.store.dispatch(deleteHero({
       id: hero.id
+    }));
+    this.store.dispatch(addMessage({
+      message: `HeroesComponent: Deleted hero name=${hero.name}`
     }));
   }
 }

@@ -9,7 +9,7 @@ export interface HeroState {
     topHeroes: Hero[];
 }
 
-export const initialState: HeroState = {
+const initialState: HeroState = {
     heroes: [],
     error: null,
     status: "pending",
