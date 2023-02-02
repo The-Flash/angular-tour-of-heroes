@@ -1,6 +1,6 @@
 <h2 id="title">Top Heroes</h2>
 <div class="heroes-menu">
-    <mat-chip-listbox id="top-heroes" *ngFor="let hero of heroes">
+    <mat-chip-listbox id="top-heroes" *ngFor="let hero of heroes$ | async">
         <mat-chip-option>{{hero.name}}</mat-chip-option>
     </mat-chip-listbox>
 </div>

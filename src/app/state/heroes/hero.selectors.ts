@@ -8,4 +8,9 @@ export const selectHeroState = createFeatureSelector<
 export const selectAllHeroes = createSelector(
     selectHeroState,
     (state: HeroState) => state.heroes
-); 
+);
+
+export const selectTopHeroes = createSelector(
+    selectHeroState,
+    (state: HeroState) => state.topHeroes
+);

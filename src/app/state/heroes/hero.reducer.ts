@@ -5,13 +5,15 @@ import { addHeroSuccess, deleteHero, loadHeroes, loadHeroesFailure, loadHeroesSu
 export interface HeroState {
     heroes: Hero[];
     error?: string | null;
-    status: "pending" | "loading" | "error" | "success"
+    status: "pending" | "loading" | "error" | "success",
+    topHeroes: Hero[];
 }
 
 export const initialState: HeroState = {
     heroes: [],
     error: null,
-    status: "pending"
+    status: "pending",
+    topHeroes: []
 }
 
 export const heroReducer = createReducer(
@@ -21,6 +23,7 @@ export const heroReducer = createReducer(
         ...state,
         status: "success",
         heroes,
+        topHeroes: heroes.slice(1, 5)
     })),
     on(loadHeroesFailure, (state, { error }) => ({
         ...state,

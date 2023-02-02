@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Hero } from 'src/features/shared/@types';
+import { Store } from '@ngrx/store';
+import { loadHeroes } from 'src/app/state/heroes/hero.actions';
+import { selectTopHeroes } from 'src/app/state/heroes/hero.selectors';
 import { IHeroService } from 'src/features/shared/services/hero.service';
 
 @Component({
@@ -8,16 +10,14 @@ import { IHeroService } from 'src/features/shared/services/hero.service';
   styleUrls: ["./dashboard.component.scss"]
 })
 export class DashboardComponent implements OnInit {
-  heroes: Hero[] = [];
+  heroes$ = this.store.select(selectTopHeroes);
 
-  constructor(private heroService: IHeroService) {}
+  constructor(
+    private heroService: IHeroService,
+    private store: Store
+  ) { }
 
   ngOnInit(): void {
-      this.getHeroes();
-  }
-
-  getHeroes(): void {
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes.slice(1, 5))
+    this.store.dispatch(loadHeroes());
   }
 }
