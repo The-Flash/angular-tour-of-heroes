@@ -1,47 +1,45 @@
-import { Component } from '@angular/core';
-import { HEROES } from 'src/features/shared/mocks/mock-heroes';
+import { Component, OnInit } from '@angular/core';
 import { Hero } from 'src/features/shared/@types';
-import { IHeroService } from 'src/features/shared/services/hero.service';
-import { IMessageService } from 'src/features/shared/services/message.service';
-import { BehaviorSubject, combineLatest, concat, map, Observable, of, race, Subject, tap } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { Store, Select } from "@ngxs/store";
+import { Message } from 'src/app/state/messages/message.actions';
+import { Heroes } from 'src/app/state/heroes/hero.action';
+import { HeroState } from 'src/app/state/heroes/hero.state';
 @Component({
   selector: 'app-heroes',
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.scss']
 })
-export class HeroesComponent {
+export class HeroesComponent implements OnInit {
 
   selectedHero?: Hero;
   newHero?= null;
-  private newHeroSubject = new BehaviorSubject<Hero | null>(null);
-  private deleteHeroSubject = new BehaviorSubject<number | null>(null);
 
-  heroes$: Observable<Hero[]> = this.heroService.allHeroes$;
-  constructor(public heroService: IHeroService, private messageService: IMessageService) { }
+  @Select(HeroState.heroes) heroes$!: Observable<Hero[]>;
+
+
+  constructor(
+    private store: Store
+  ) { }
 
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
-    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
+    this.store.dispatch(new Message.Add(
+      `HeroesComponent: Selected hero id=${hero.id}`
+    ));
   }
 
-  getHeroes() {
-    return this.heroService.allHeroes$;
+  ngOnInit(): void {
+    this.store.dispatch(new Heroes.LoadAll());
   }
 
   add(name: string): void {
     name = name.trim();
     if (!name) return;
-    this.heroService.addHero({ name } as Hero)
-      .subscribe((hero => {
-        this.newHeroSubject.next(hero);
-      }));
+    this.store.dispatch(new Heroes.Add({ name }));
   }
 
   delete(hero: Hero): void {
-    this.heroService.deleteHero(hero.id)
-      .subscribe(() => {
-        this.deleteHeroSubject.next(hero.id);
-      })
+    this.store.dispatch(new Heroes.Delete(hero.id));
   }
 }
