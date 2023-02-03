@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { Heroes } from 'src/app/state/heroes/hero.action';
 import { Hero } from 'src/features/shared/@types';
 import { IHeroService } from 'src/features/shared/services/hero.service';
 
@@ -10,12 +12,11 @@ import { IHeroService } from 'src/features/shared/services/hero.service';
 export class HeroDetailComponent {
   @Input() hero?: Hero;
 
-  constructor(private heroService: IHeroService) { }
+  constructor(private store: Store) { }
 
   save() {
     if (this.hero) {
-      this.heroService.updateHero(this.hero)
-        .subscribe();
+      this.store.dispatch(new Heroes.Update(this.hero.id, this.hero.name));
     }
   }
 }

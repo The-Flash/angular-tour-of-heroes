@@ -45,4 +45,17 @@ export namespace Heroes {
     export class DeleteFailure {
         static readonly type = "[Hero] Delete Hero Failure";
     }
+
+    export class Update {
+        static readonly type = "[Hero] Update Hero";
+        constructor(public id: number, public name: string) { }
+    }
+
+    export class UpdateSuccess {
+        static readonly type = "[Hero] Update Hero success";
+        constructor(public hero: Hero) { }
+    }
+    export class UpdateFailure {
+        static readonly type = "[Hero] Update Hero Failure";
+    }
 }

@@ -107,4 +107,35 @@ export class HeroState {
     deleteHeroFailure(ctx: StateContext<HeroStateModel>) {
         ctx.dispatch(new Message.Add("[Hero] could not delete hero"));
     }
+
+    @Action(Heroes.Update)
+    updateHero(ctx: StateContext<HeroStateModel>, action: Heroes.Update) {
+        const hero = {
+            id: action.id,
+            name: action.name
+        }
+        return this.heroService.updateHero(hero)
+                .pipe(
+                    tap(() => ctx.dispatch(new Heroes.UpdateSuccess(hero))),
+                    catchError(() => ctx.dispatch(new Heroes.UpdateFailure)),
+                )
+    }
+
+    @Action(Heroes.UpdateSuccess)
+    updateHeroSuccess(ctx: StateContext<HeroStateModel>, action: Heroes.UpdateSuccess) {
+        const state = ctx.getState();
+        const index = state.heroes.findIndex((hero) => hero.id == action.hero.id);
+        const heroes = state.heroes;
+        heroes.splice(index, 1, action.hero);
+        ctx.setState({
+            ...state,
+            heroes: [...heroes]
+        });
+        ctx.dispatch(new Message.Add("[Hero] Hero updated"));
+    }
+
+    @Action(Heroes.UpdateFailure)
+    updateHeroFailure(ctx: StateContext<HeroStateModel>, action: Heroes.UpdateFailure) {
+        ctx.dispatch(new Message.Add("[Hero] Hero update failed"));
+    }
 }
